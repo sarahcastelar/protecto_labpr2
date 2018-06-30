@@ -21,3 +21,7 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/proyectoLab_pr2/nbproject/private/
+/proyectoLab_pr2/build/
+/proyectoLab_pr2/dist/
+/proyectoLab_pr2_1/nbproject/private/
