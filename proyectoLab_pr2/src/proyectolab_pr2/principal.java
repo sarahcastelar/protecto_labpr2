@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package proyectolab_pr2;
 
 import com.sun.org.apache.bcel.internal.generic.AALOAD;
@@ -18,31 +13,28 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 
-/**
- *
- * @author Usuario
- */
+
 public class principal extends javax.swing.JFrame {
     File fichero = null;
     ArrayList<String> listaPalabras = new ArrayList();
     ArrayList<Integer> listaRepetidas = new ArrayList(); //cuantas veces se repite la palabra
-    ArrayList<String> listaPalabrasFinal = new ArrayList();
-    ArrayList<String> temp1 = new ArrayList(); //se encarga de solo guardas las cosas POR LINEA.
-
-    ArrayList<String> listaPalabras2 = new ArrayList(); //las de combinaciones 2
-    ArrayList<Integer> listaRepetidas2 = new ArrayList(); //las de combinaciones 2
-    ArrayList<String> temp11 = new ArrayList(); //se encarga de solo guardas las cosas POR LINEA.
-    ArrayList<String> temp22 = new ArrayList(); //las de combinaciones 2
     
-    ArrayList<String> listaPalabras3 = new ArrayList(); //las de combinaciones 3
-    ArrayList<Integer> listaRepetidas3 = new ArrayList(); //las de combinaciones 3
-    ArrayList<String> temp33 = new ArrayList(); 
-    ArrayList<String> temp44 = new ArrayList(); 
-    ArrayList<String> temp55 = new ArrayList(); 
+    ArrayList <String> listaFrases2 = new ArrayList();
+    ArrayList <Integer> listaFrases2Repetidas = new ArrayList();
+    
+    ArrayList <String> listaFrases3 = new ArrayList();
+    ArrayList <Integer> listaFrases3Repetidas = new ArrayList();
+    
+    ArrayList <Object> temporalUnidos = new ArrayList();
+    ArrayList <Integer> temporalRepetidas = new ArrayList();
+    ArrayList <String> temporalRepetidas1 = new ArrayList(); 
+    
+    ArrayList <String> prohibidas = new ArrayList();
     
     public principal() {
         initComponents();
         this.setLocationRelativeTo(null);
+        prohibidas();
     }
     
     ArrayList total = new ArrayList();
@@ -53,6 +45,40 @@ public class principal extends javax.swing.JFrame {
         }
         Collections.sort(total);
         return total;
+    }
+    
+    public void prohibidas(){
+     prohibidas.add("all");
+     prohibidas.add("and");
+     prohibidas.add("How");
+     prohibidas.add("Is");
+     prohibidas.add("of");
+     prohibidas.add("or");
+     prohibidas.add("was");
+     prohibidas.add("the");
+     prohibidas.add("a");
+     prohibidas.add("in");
+     prohibidas.add("if");
+     prohibidas.add("to");
+     prohibidas.add("on");
+     prohibidas.add("at");
+     prohibidas.add("vs");
+     prohibidas.add("from");
+     prohibidas.add("my");
+     prohibidas.add("for");
+     prohibidas.add("an");
+     prohibidas.add("that");
+     prohibidas.add("this");
+     prohibidas.add("go");
+     prohibidas.add("for");
+     prohibidas.add("or");
+     prohibidas.add("is");
+     prohibidas.add("with");
+     prohibidas.add("it");
+     prohibidas.add("in");
+     prohibidas.add("the");
+     prohibidas.add("and");
+     
     }
     
     @SuppressWarnings("unchecked")
@@ -167,10 +193,10 @@ public class principal extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
+        
         FileReader fr = null;
         BufferedReader br = null;
         ta_1.setText("");
-        int c=0;
         try{
             JFileChooser jfc = new JFileChooser("./");
             FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto","txt");
@@ -178,107 +204,172 @@ public class principal extends javax.swing.JFrame {
             jfc.setFileFilter(filtro);//queda por defecto default
             jfc.addChoosableFileFilter(filtro2);//solo lo agrega a la lista
             int seleccion = jfc.showOpenDialog(this);
-            int cont = 0;
+            
             if (seleccion == JFileChooser.APPROVE_OPTION) {
                 fichero = jfc.getSelectedFile();
                 fr = new FileReader(fichero);
                 br = new BufferedReader(fr);
-                String linea;
+                String linea, resultString="", temporal;
                 ta_1.setText("");
                 ta2.setText("");
-                String resultString="", temporal;
-                StringBuilder result = new StringBuilder();
-                while( (linea = br.readLine()) != null ){
+                while ((linea = br.readLine()) != null) {
+                    int wordCount = 0;
+                    ArrayList<String> listaPalabrasTemporal = new ArrayList();
                     ta_1.append(linea + "\n");
                     resultString = linea.replaceAll("[^\\p{L}\\p{Nd}]+", " ");
                     resultString = resultString.replaceAll(" [0-9] ", " ");
-                    resultString = resultString.replaceAll("\\d","");
-                    resultString = resultString.replaceAll(" and | all | How | Is | and | of | or | was | the | a | in | if | to | on | at | [a-z] | [A-Z] | vs | from | my | for | an | that | this | go ", " ");
-                    resultString = resultString.replaceAll(" [a-z] | [A-Z] | to |[0-9]", " ");
+                    resultString = resultString.replaceAll("\\d", "");
+                    resultString = resultString.replaceAll(" [a-z] ", " ");
+                    resultString = resultString.replaceAll(" [A-Z] ", " ");
 
                     temporal = resultString;
                     temporal = temporal.replaceAll(" ", ",");
                     temporal = temporal.toLowerCase();
                     StringTokenizer st = new StringTokenizer(temporal, ",");
-                    
+
                     int n = -1, n2 = -1;
                     while (st.hasMoreElements()) {
                         Object nextElement = st.nextElement();
-                        if (listaPalabras.contains(nextElement.toString())) {
-                            n = listaPalabras.indexOf(nextElement.toString());
-                            n2 = listaRepetidas.get(n);
-                            listaRepetidas.set(n, n2 + 1);
-                        } else {
-                            listaPalabras.add(nextElement.toString());
-                            listaRepetidas.add(1);
-                        }
-                    }   
-}
-                    for (int i = 0; i < listaPalabras.size(); i++) {
-                        int n = -1;
-                        int n2 = -1;
-                        try {
-                            String temp = listaPalabras.get(i) + " " + listaPalabras.get(i + 1);
-                            temp1.add(temp);
-                            temp11.add(listaPalabras.get(i));
-                            temp22.add(listaPalabras.get(i + 1));
-                            if (temp11.indexOf(listaPalabras.get(i)) >0) {
-                                //verifico si temp22 lo tiene y asi
-                                //veo ambos valores de index of para saber si se repite en el total
-                                int n1= temp11.indexOf(listaPalabras.get(i));
-                                int n11 = temp11.indexOf(listaPalabras.get(i+1));
-                                if (n1 == n11) {
-                                    n = listaPalabras2.indexOf(temp1.get(i));
-                                    n2 = listaRepetidas2.get(n);
-                                    listaRepetidas2.set(n, n2 + 1);
+                        if (!prohibidas.contains(nextElement.toString())) {
+                            if (listaPalabras.contains(nextElement.toString())) {
+                                n = listaPalabras.indexOf(nextElement.toString());
+                                n2 = listaRepetidas.get(n);
+                                listaRepetidas.set(n, n2 + 1);
+                                if (listaPalabrasTemporal.contains(nextElement.toString())) {
+                                    //no hago nada pq ya lo tiene.
                                 } else {
-                                    listaPalabras2.add(temp1.get(i));
-                                    listaRepetidas2.add(1);
+                                    listaPalabrasTemporal.add(nextElement.toString());
+                                    wordCount++;
                                 }
-                            } 
-                        } catch (Exception e) {
-                            break;
+                            } else {
+                                listaPalabras.add(nextElement.toString());
+                                listaRepetidas.add(1);
+                                listaPalabrasTemporal.add(nextElement.toString());
+                                wordCount++;
+                            }
                         }
                     }
-                        temp1.clear();
+
+                    for (int i = 0; i < wordCount; i++) {
+                        for (int j = i + 1; j < wordCount; j++) {//j = i + 1
+                            String temp = listaPalabrasTemporal.get(i) + " " + listaPalabrasTemporal.get(j);
+                            String temp1 = listaPalabrasTemporal.get(j) + " " + listaPalabrasTemporal.get(i);
+                            if (listaFrases2.contains(temp)) {
+                                n = listaFrases2.indexOf(temp);
+                                n2 = listaFrases2Repetidas.get(n);
+                                listaFrases2Repetidas.set(n, n2 + 1); //lo acumula
+                            } else if (listaFrases2.contains(temp1)) {
+                                n = listaFrases2.indexOf(temp1);
+                                n2 = listaFrases2Repetidas.get(n);
+                                listaFrases2Repetidas.set(n, n2 + 1);
+                            } else {
+                                listaFrases2.add(temp);
+                                listaFrases2Repetidas.add(1);
+                            }
+
+                            for (int k = j + 1; k < wordCount; k++) { //k = J+1
+                                String temp2 = listaPalabrasTemporal.get(i) + " " + listaPalabrasTemporal.get(j) + " " + listaPalabrasTemporal.get(k);
+                                String temp2_1 = listaPalabrasTemporal.get(j) + " " + listaPalabrasTemporal.get(i) + " " + listaPalabrasTemporal.get(k);
+                                String temp2_2 = listaPalabrasTemporal.get(j) + " " + listaPalabrasTemporal.get(k) + " " + listaPalabrasTemporal.get(i);
+                                String temp2_3 = listaPalabrasTemporal.get(j) + " " + listaPalabrasTemporal.get(i) + " " + listaPalabrasTemporal.get(k);
+                                String temp2_4 = listaPalabrasTemporal.get(i) + " " + listaPalabrasTemporal.get(k) + " " + listaPalabrasTemporal.get(j);
+                                String temp2_5 = listaPalabrasTemporal.get(k) + " " + listaPalabrasTemporal.get(j) + " " + listaPalabrasTemporal.get(i);
+                                //son 6 strings diferentes porque con 3 palabras diferentes salen 6 combinaciones de ahi. 3*2*1.
+
+                                if (listaFrases3.contains(temp2)) {
+                                    n = listaFrases3.indexOf(temp2);
+                                    n2 = listaFrases3Repetidas.get(n);
+                                    listaFrases3Repetidas.set(n, n2 + 1); //lo acumula
+                                } else if (listaFrases3.contains(temp2_1)) {
+                                    n = listaFrases3.indexOf(temp2_1);
+                                    n2 = listaFrases3Repetidas.get(n);
+                                    listaFrases3Repetidas.set(n, n2 + 1);
+                                } else if (listaFrases3.contains(temp2_2)) {
+                                    n = listaFrases3.indexOf(temp2_2);
+                                    n2 = listaFrases3Repetidas.get(n);
+                                    listaFrases3Repetidas.set(n, n2 + 1);
+                                } else if (listaFrases3.contains(temp2_3)) {
+                                    n = listaFrases3.indexOf(temp2_3);
+                                    n2 = listaFrases3Repetidas.get(n);
+                                    listaFrases3Repetidas.set(n, n2 + 1);
+                                } else if (listaFrases3.contains(temp2_4)) {
+                                    n = listaFrases3.indexOf(temp2_3);
+                                    n2 = listaFrases3Repetidas.get(n);
+                                    listaFrases3Repetidas.set(n, n2 + 1);
+                                } else if (listaFrases3.contains(temp2_5)) {
+                                    n = listaFrases3.indexOf(temp2_5);
+                                    n2 = listaFrases3Repetidas.get(n);
+                                    listaFrases3Repetidas.set(n, n2 + 1);
+                                } else {
+                                    listaFrases3.add(temp2);
+                                    listaFrases3Repetidas.add(1);
+                                }
+                            }
+                        }
+
+                    }
+            }//fin while que lee linea
                 for (int i = 0; i < listaPalabras.size(); i++) {
-                        int n = -1;
-                        int n2 = -1;
-                        try {
-                            String temp = listaPalabras.get(i) + " " + listaPalabras.get(i + 1) + " " + listaPalabras.get(i + 2);
-                            temp1.add(temp);
-                            temp33.add(listaPalabras.get(i));
-                            temp44.add(listaPalabras.get(i + 1));
-                            temp55.add(listaPalabras.get(i + 2));
-                            if (temp11.indexOf(listaPalabras.get(i)) >0) {
-                                //verifico si temp33 lo tiene y asi
-                                //veo ambos valores de index of para saber si se repite en el total
-                                int n1= temp33.indexOf(listaPalabras.get(i));
-                                int n11 = temp44.indexOf(listaPalabras.get(i+1));
-                                int n12 = temp55.indexOf(listaPalabras.get(i+2));
-                                if (listaPalabras3.contains(temp)) {
-                                    n = listaPalabras3.indexOf(temp1.get(i));
-                                    n2 = listaRepetidas3.get(n);
-                                    listaRepetidas3.set(n, n2 + 1);
-                                } else {
-                                    listaPalabras3.add(temp1.get(i));
-                                    listaRepetidas3.add(1);
-                                }
-                            } 
-                        } catch (Exception e) {
-                            break;
-                        }
-                    }
+                    temporalUnidos.add(listaPalabras.get(i));
+                    temporalUnidos.add(listaRepetidas.get(i));
+                }
+                
+                /*temporalRepetidas.addAll(listaRepetidas);
+                Collections.sort(temporalRepetidas);
+                Collections.reverse(temporalRepetidas);*/
+                System.out.println(temporalUnidos);
+                //temporalRepetidas1.addAll(temporalUnidos);
+                Collections.sort(temporalRepetidas1);
+                System.out.println(temporalRepetidas);
+                Collections.reverse(temporalRepetidas1);
+                System.out.println(temporalRepetidas);
+                
                 ta2.append("Top 10: \n");
+                for (int i = 0; i < temporalRepetidas1.size(); i++) {
+                    ta2.append(temporalRepetidas1.get(i) + "\n");
+                }
+                
+                
+                
+                for (int i = 0; i < listaPalabras.size(); i++) {
+                    ta2.append(listaPalabras.get(i) + " " + listaRepetidas.get(i) + "\n");
+                    for (int j = 0; j < listaFrases2.size(); j++) {
+                        ta2.append(listaFrases2.get(j) + " " + listaFrases2Repetidas.get(j) + "\n");
+                    }
+                    for (int j = 0; j < listaFrases3.size(); j++) {
+                        ta2.append(listaFrases3.get(j) + " " + listaFrases3Repetidas.get(j) + "\n");
+                    }
+                }
+                
+                
+                
+                
+                        //temp1.clear();
+                            /*if (listaFrases2.contains(temp2)) {
+                                //si ya existe la frase no tengo porque agregarla de nuevo, solo aumento su count.
+                                n = listaFrases2.indexOf(temp2);
+                                n2 = listaFrases2Repetidas.get(n);
+                                listaFrases2Repetidas.set(n, n2 + 1); //lo acumula
+                                
+                            }else if (listaFrases2.contains(temp)){
+                                n = listaFrases2.indexOf(temp);
+                                n2 = listaFrases2Repetidas.get(n);
+                                listaFrases2Repetidas.set(n, n2 + 1); //lo acumula
+                            } else {
+                                listaFrases2.add(temp);
+                                listaFrases2Repetidas.add(1);
+                            }*/
+                
+                //ta2.append("Top 10: \n");
                 /*for (int i = 0; i < listaRepetidas.size(); i++) {
                     total.add(listaRepetidas.get(i)+ " " +listaPalabras.get(i));
-                }*/
+                }
                 //Collections.reverse(total);
                 //Collections.reverse(listaRepetidas);
-                total.addAll(listaRepetidas);
-                Collections.sort(total, Collections.reverseOrder());
+                //total.addAll(listaRepetidas);
+                //Collections.sort(total, Collections.reverseOrder());
                 //Collections.sort(listaPalabras, Collections.reverseOrder());
-                for (int i = 0; i < 10; i++) {
+                //for (int i = 0; i < 10; i++) {
                     //ta2.append(total.get(i).toString()+ "\n");
                     int pos = listaRepetidas.indexOf(total.get(i));
                     ta2.append(listaPalabras.get(pos) + " " + listaRepetidas.get(pos) + "\n");
@@ -293,9 +384,9 @@ public class principal extends javax.swing.JFrame {
                 }
                 for (int i = 0; i < listaPalabras3.size(); i++) {
                         ta2.append(listaPalabras3.get(i) + " " + listaRepetidas3.get(i)+ "\n");
-                }
-                
-            }
+                }*/
+            }      
+            
         }catch (Exception e){
             e.printStackTrace();
         }
