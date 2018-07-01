@@ -309,27 +309,7 @@ public class principal extends javax.swing.JFrame {
 
                     }
             }//fin while que lee linea
-                for (int i = 0; i < listaPalabras.size(); i++) {
-                    temporalUnidos.add(listaPalabras.get(i));
-                    temporalUnidos.add(listaRepetidas.get(i));
-                }
-                
-                /*temporalRepetidas.addAll(listaRepetidas);
-                Collections.sort(temporalRepetidas);
-                Collections.reverse(temporalRepetidas);*/
-                System.out.println(temporalUnidos);
-                //temporalRepetidas1.addAll(temporalUnidos);
-                Collections.sort(temporalRepetidas1);
-                System.out.println(temporalRepetidas);
-                Collections.reverse(temporalRepetidas1);
-                System.out.println(temporalRepetidas);
-                
-                ta2.append("Top 10: \n");
-                for (int i = 0; i < temporalRepetidas1.size(); i++) {
-                    ta2.append(temporalRepetidas1.get(i) + "\n");
-                }
-                
-                
+                ta2.append("Combinaciones: \n"); 
                 
                 for (int i = 0; i < listaPalabras.size(); i++) {
                     ta2.append(listaPalabras.get(i) + " " + listaRepetidas.get(i) + "\n");
@@ -342,49 +322,6 @@ public class principal extends javax.swing.JFrame {
                 }
                 
                 
-                
-                
-                        //temp1.clear();
-                            /*if (listaFrases2.contains(temp2)) {
-                                //si ya existe la frase no tengo porque agregarla de nuevo, solo aumento su count.
-                                n = listaFrases2.indexOf(temp2);
-                                n2 = listaFrases2Repetidas.get(n);
-                                listaFrases2Repetidas.set(n, n2 + 1); //lo acumula
-                                
-                            }else if (listaFrases2.contains(temp)){
-                                n = listaFrases2.indexOf(temp);
-                                n2 = listaFrases2Repetidas.get(n);
-                                listaFrases2Repetidas.set(n, n2 + 1); //lo acumula
-                            } else {
-                                listaFrases2.add(temp);
-                                listaFrases2Repetidas.add(1);
-                            }*/
-                
-                //ta2.append("Top 10: \n");
-                /*for (int i = 0; i < listaRepetidas.size(); i++) {
-                    total.add(listaRepetidas.get(i)+ " " +listaPalabras.get(i));
-                }
-                //Collections.reverse(total);
-                //Collections.reverse(listaRepetidas);
-                //total.addAll(listaRepetidas);
-                //Collections.sort(total, Collections.reverseOrder());
-                //Collections.sort(listaPalabras, Collections.reverseOrder());
-                //for (int i = 0; i < 10; i++) {
-                    //ta2.append(total.get(i).toString()+ "\n");
-                    int pos = listaRepetidas.indexOf(total.get(i));
-                    ta2.append(listaPalabras.get(pos) + " " + listaRepetidas.get(pos) + "\n");
-                   //ta2.append(listaRepetidas.get(i)+" "+listaPalabras.get(i) + "\n");//
-                }
-                ta2.append("\n Combinaciones: \n");
-                for (int i = 0; i < listaPalabras.size(); i++) {
-                        ta2.append(listaPalabras.get(i) + " " + listaRepetidas.get(i) + "\n");
-                }
-                for (int i = 0; i < listaPalabras2.size(); i++) {
-                        ta2.append(listaPalabras2.get(i) + " " + listaRepetidas2.get(i)+ "\n");
-                }
-                for (int i = 0; i < listaPalabras3.size(); i++) {
-                        ta2.append(listaPalabras3.get(i) + " " + listaRepetidas3.get(i)+ "\n");
-                }*/
             }      
             
         }catch (Exception e){
